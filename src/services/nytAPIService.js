@@ -13,7 +13,7 @@ async function fetchArticlesFromNYTAPI(query, filters) {
       return data.response.docs.map((article) => ({
         id: article._id,
         title: article.headline.main,
-        date: article.pub_date,
+        publishedAt: article.pub_date?.split("T")[0] || "",
         url: article.web_url,
         section: article.section_name,
         description: article.lead_paragraph,

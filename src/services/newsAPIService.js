@@ -25,7 +25,7 @@ async function fetchArticlesFromNewsAPI(query, filters) {
       .map((article) => ({
         id: article.source.id,
         title: article.title,
-        date: article.publishedAt,
+        publishedAt: article.publishedAt?.split("T")[0] || "",
         url: article.url,
         section: null,
         description: article.description,

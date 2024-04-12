@@ -13,6 +13,7 @@ async function fetchArticlesFromGuardianAPI(query, filters) {
         description: article.sectionName,
         url: article.webUrl,
         source: "The Guardian",
+        publishedAt: article.webPublicationDate?.split("T")[0] || "",
       }));
     } else {
       return [];
