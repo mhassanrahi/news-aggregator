@@ -6,6 +6,8 @@ import Filters from "./components/Filters";
 import { fetchArticlesFromNewsAPI } from "./services/newsAPIService";
 import { fetchArticlesFromGuardianAPI } from "./services/guardianAPIService";
 import { fetchArticlesFromNYTAPI } from "./services/nytAPIService";
+import { searchArticles } from "./services/searchService";
+import { DATA_SOURCE } from "./constant";
 
 function App() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -13,49 +15,38 @@ function App() {
   const [articles, setArticles] = useState([]);
 
   useEffect(() => {
-    const fetchDefaultArticles = async () => {
-      const defaultArticles = await fetchArticlesFromNewsAPI("", {});
-
-      setArticles(defaultArticles);
+    const fetchData = async () => {
+      let fetchedArticles = [];
+      if (searchQuery) {
+        fetchedArticles = await searchArticles(searchQuery, filters);
+      } else if (filters.selectedDataSource === DATA_SOURCE.GUARDIAN) {
+        fetchedArticles = await fetchArticlesFromGuardianAPI("latest", {});
+      } else if (filters.selectedDataSource === DATA_SOURCE.NYTIMES) {
+        fetchedArticles = await fetchArticlesFromNYTAPI("latest", {});
+      } else {
+        fetchedArticles = await fetchArticlesFromNewsAPI("latest", {});
+      }
+      setArticles(fetchedArticles);
     };
 
-    fetchDefaultArticles();
-  }, []);
+    fetchData();
+  }, [searchQuery, filters]);
 
   const handleSearch = (query) => {
     setSearchQuery(query);
   };
 
-  const handleFilter = async (filterOptions) => {
+  const handleFilter = (filterOptions) => {
     setFilters(filterOptions);
-
-    let fetchedArticles = [];
-
-    if (
-      filterOptions.selectedDataSource === "newsapi" ||
-      !filterOptions.selectedDataSource
-    ) {
-      fetchedArticles = await fetchArticlesFromNewsAPI(
-        searchQuery,
-        filterOptions
-      );
-    } else if (filterOptions.selectedDataSource === "guardian") {
-      fetchedArticles = await fetchArticlesFromGuardianAPI(
-        searchQuery,
-        filterOptions
-      );
-    } else if (filterOptions.selectedDataSource === "nytimes") {
-      fetchedArticles = await fetchArticlesFromNYTAPI(
-        searchQuery,
-        filterOptions
-      );
-    }
-
-    setArticles(fetchedArticles);
   };
 
   const handleResetFilters = () => {
     setFilters({});
+    setSearchQuery("");
+  };
+
+  const onClearSearch = () => {
+    setSearchQuery("");
   };
 
   return (
@@ -63,7 +54,7 @@ function App() {
       <h1 className="text-3xl font-semibold mb-4">News Aggregator</h1>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div className="col-span-2">
-          <SearchBar onSearch={handleSearch} />
+          <SearchBar onSearch={handleSearch} onClearSearch={onClearSearch} />
           <ArticleList articles={articles} />
         </div>
         <div>
