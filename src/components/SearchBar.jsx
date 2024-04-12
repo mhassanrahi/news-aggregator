@@ -1,11 +1,16 @@
-import { useState } from 'react';
+import { useState } from "react";
 
-function SearchBar({ onSearch }) {
-  const [query, setQuery] = useState('');
+function SearchBar({ onSearch, onClearSearch }) {
+  const [query, setQuery] = useState("");
 
   const handleSubmit = (event) => {
     event.preventDefault();
     onSearch(query);
+  };
+
+  const handleClear = () => {
+    setQuery("");
+    onClearSearch();
   };
 
   return (
@@ -18,7 +23,19 @@ function SearchBar({ onSearch }) {
           value={query}
           onChange={(event) => setQuery(event.target.value)}
         />
-        <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded-md ml-2">Search</button>
+        <button
+          type="submit"
+          className="bg-blue-500 text-white px-4 py-2 rounded-md ml-2"
+        >
+          Search
+        </button>
+        <button
+          type="button"
+          onClick={handleClear}
+          className="bg-gray-300 text-gray-700 px-4 py-2 rounded-md ml-2"
+        >
+          Clear
+        </button>
       </form>
     </div>
   );
