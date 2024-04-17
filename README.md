@@ -12,6 +12,10 @@ The News Aggregator fetches news articles from the following resources:
 
 It allows users to search for articles, apply filters, and view details of each article.
 
+## Demo
+
+Check out the live demo of the project [here](https://the-news-aggregator.vercel.app/).
+
 ## Features
 
 - Search articles by keyword
