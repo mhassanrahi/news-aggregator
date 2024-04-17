@@ -16,6 +16,7 @@ function ArticleList({ articles }) {
 
   return (
     <div>
+      <h2 className="text-2xl font-semibold mb-4">Latest Articles</h2>
       {currentArticles.map((article, index) => (
         <div key={index} className="mb-4 border border-gray-300 p-4 rounded-md">
           <h2 className="text-lg font-semibold mb-2">{article.title}</h2>

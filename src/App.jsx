@@ -13,10 +13,12 @@ function App() {
   const [searchQuery, setSearchQuery] = useState("");
   const [filters, setFilters] = useState({});
   const [articles, setArticles] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
       let fetchedArticles = [];
+      setLoading(true);
       if (searchQuery) {
         fetchedArticles = await searchArticles(searchQuery, filters);
       } else if (filters.selectedDataSource === DATA_SOURCE.GUARDIAN) {
@@ -27,6 +29,7 @@ function App() {
         fetchedArticles = await fetchArticlesFromNewsAPI("latest", {});
       }
       setArticles(fetchedArticles);
+      setLoading(false);
     };
 
     fetchData();
@@ -51,18 +54,28 @@ function App() {
 
   return (
     <div className="container">
-      <div className="mb-4 md:flex md:justify-between">
-        <h1 className="text-3xl font-semibold mb-4">News Aggregator</h1>
+      <div className="mb-4 md:flex md:justify-between border-b-2 border-gray-300">
+        <h1 className="text-3xl font-semibold mb-4">
+          <a href="#" className="text-black hover:text-blue-500">
+            News Aggregator
+          </a>
+        </h1>
         <SearchBar onSearch={handleSearch} onClearSearch={onClearSearch} />
       </div>
 
       <div className="flex flex-col md:flex-row md:gap-4">
-        <div className="md:flex-1 order-1">
-          <ArticleList articles={articles} />
-        </div>
-        <div className="md:w-1/4 md:order-last mb-4 border-2 p-2 rounded md:mb-0 md:border-none md:p-0">
-          <Filters onFilter={handleFilter} onReset={handleResetFilters} />
-        </div>
+        <>
+          <div className="md:flex-1 order-1">
+            {loading ? (
+              <p className="text-xl">Loading...</p>
+            ) : (
+              <ArticleList articles={articles} />
+            )}
+          </div>
+          <div className="md:w-1/4 md:order-last mb-4 border-2 p-2 rounded md:mb-0 md:border-none md:p-0">
+            <Filters onFilter={handleFilter} onReset={handleResetFilters} />
+          </div>
+        </>
       </div>
     </div>
   );
