@@ -63,7 +63,9 @@ function ArticleList({ articles }) {
             <button
               key={pageNumber}
               onClick={() => paginate(pageNumber + 1)}
-              className="mx-1 px-3 py-1 bg-blue-500 text-white rounded"
+              className={`mx-1 px-3 py-1 bg-blue-500 text-white rounded ${
+                pageNumber + 1 === currentPage ? "bg-blue-600" : ""
+              }`}
             >
               {pageNumber + 1}
             </button>
