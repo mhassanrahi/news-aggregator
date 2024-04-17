@@ -19,19 +19,24 @@ function App() {
 
   useEffect(() => {
     const fetchData = async () => {
-      let fetchedArticles = [];
       setLoading(true);
-      if (searchQuery) {
-        fetchedArticles = await searchArticles(searchQuery, filters);
-      } else if (filters.selectedDataSource === DATA_SOURCE.GUARDIAN) {
-        fetchedArticles = await fetchArticlesFromGuardianAPI("latest", {});
-      } else if (filters.selectedDataSource === DATA_SOURCE.NYTIMES) {
-        fetchedArticles = await fetchArticlesFromNYTAPI("latest", {});
-      } else {
-        fetchedArticles = await fetchArticlesFromNewsAPI("latest", {});
+      try {
+        let fetchedArticles = [];
+        if (searchQuery) {
+          fetchedArticles = await searchArticles(searchQuery, filters);
+        } else if (filters.selectedDataSource === DATA_SOURCE.NYTIMES) {
+          fetchedArticles = await fetchArticlesFromNewsAPI("latest", {});
+        } else if (filters.selectedDataSource === DATA_SOURCE.GUARDIAN) {
+          fetchedArticles = await fetchArticlesFromNYTAPI("latest", {});
+        } else {
+          fetchedArticles = await fetchArticlesFromGuardianAPI("latest", {});
+        }
+        setArticles(fetchedArticles);
+      } catch (error) {
+        console.error("Error fetching articles:", error);
+      } finally {
+        setLoading(false);
       }
-      setArticles(fetchedArticles);
-      setLoading(false);
     };
 
     fetchData();
