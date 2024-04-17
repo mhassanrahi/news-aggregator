@@ -50,14 +50,17 @@ function App() {
   };
 
   return (
-    <div className="container mx-auto py-8">
-      <h1 className="text-3xl font-semibold mb-4">News Aggregator</h1>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="col-span-2">
-          <SearchBar onSearch={handleSearch} onClearSearch={onClearSearch} />
+    <div className="container">
+      <div className="mb-4 md:flex md:justify-between">
+        <h1 className="text-3xl font-semibold mb-4">News Aggregator</h1>
+        <SearchBar onSearch={handleSearch} onClearSearch={onClearSearch} />
+      </div>
+
+      <div className="flex flex-col md:flex-row md:gap-4">
+        <div className="md:flex-1 order-1">
           <ArticleList articles={articles} />
         </div>
-        <div>
+        <div className="md:w-1/4 md:order-last mb-4 border-2 p-2 rounded md:mb-0 md:border-none md:p-0">
           <Filters onFilter={handleFilter} onReset={handleResetFilters} />
         </div>
       </div>
