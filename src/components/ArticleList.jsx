@@ -1,33 +1,53 @@
-function ArticleList({ articles, onClearSearch }) {
+import { useState } from "react";
+import { formatDate } from "../utils";
+
+function ArticleList({ articles }) {
+  const [currentPage, setCurrentPage] = useState(1);
+  const articlesPerPage = 5;
+
+  const indexOfLastArticle = currentPage * articlesPerPage;
+  const indexOfFirstArticle = indexOfLastArticle - articlesPerPage;
+  const currentArticles = articles.slice(
+    indexOfFirstArticle,
+    indexOfLastArticle
+  );
+
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
   return (
     <div>
-      <h2 className="text-xl font-semibold mb-4">Articles</h2>
-      {articles && articles.length > 0 ? (
-        <div className="grid gap-4">
-          {articles.map((article, index) => (
-            <div key={index} className="border border-gray-200 p-4 rounded-md">
-              <h3 className="text-lg font-medium mb-2">{article.title}</h3>
-              <p className="text-gray-600">{article.description}</p>
-              <p className="text-sm text-gray-500">
-                Published on: {article.publishedAt}
-              </p>
-              <p className="text-sm text-gray-500 mt-2">
-                Source: {article.source}
-              </p>
-              <a
-                href={article.url}
-                className="text-blue-500 mt-2 block"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Read More
-              </a>
-            </div>
-          ))}
+      {currentArticles.map((article, index) => (
+        <div key={index} className="mb-4 border border-gray-300 p-4 rounded-md">
+          <h2 className="text-lg font-semibold mb-2">{article.title}</h2>
+          <p className="text-gray-700 mb-2">{article.description}</p>
+          <p className="text-sm text-gray-500">
+            Published on: {formatDate(article.publishedAt)}
+          </p>
+          <p className="text-sm text-gray-500 mt-2">Source: {article.source}</p>
+          <a
+            href={article.url}
+            className="text-blue-500 mt-2 block"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Read More
+          </a>
         </div>
-      ) : (
-        <p>No articles found.</p>
-      )}
+      ))}
+      {/* Pagination */}
+      <div className="flex justify-center mt-4">
+        {[...Array(Math.ceil(articles.length / articlesPerPage)).keys()].map(
+          (pageNumber) => (
+            <button
+              key={pageNumber}
+              onClick={() => paginate(pageNumber + 1)}
+              className="mx-1 px-3 py-1 bg-blue-500 text-white rounded"
+            >
+              {pageNumber + 1}
+            </button>
+          )
+        )}
+      </div>
     </div>
   );
 }
