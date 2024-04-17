@@ -24,12 +24,15 @@ function App() {
         let fetchedArticles = [];
         if (searchQuery) {
           fetchedArticles = await searchArticles(searchQuery, filters);
+        } else if (filters.selectedDataSource === DATA_SOURCE.NEWS_API) {
+          fetchedArticles = await fetchArticlesFromNewsAPI("latest", filters);
         } else if (filters.selectedDataSource === DATA_SOURCE.NYTIMES) {
-          fetchedArticles = await fetchArticlesFromNewsAPI("latest", {});
-        } else if (filters.selectedDataSource === DATA_SOURCE.GUARDIAN) {
-          fetchedArticles = await fetchArticlesFromNYTAPI("latest", {});
+          fetchedArticles = await fetchArticlesFromNYTAPI("latest", filters);
         } else {
-          fetchedArticles = await fetchArticlesFromGuardianAPI("latest", {});
+          fetchedArticles = await fetchArticlesFromGuardianAPI(
+            "latest",
+            filters
+          );
         }
         setArticles(fetchedArticles);
       } catch (error) {
