@@ -3,10 +3,12 @@ import "./App.css";
 import ArticleList from "./components/ArticleList";
 import SearchBar from "./components/SearchBar";
 import Filters from "./components/Filters";
-import { fetchArticlesFromNewsAPI } from "./services/newsAPIService";
-import { fetchArticlesFromGuardianAPI } from "./services/guardianAPIService";
-import { fetchArticlesFromNYTAPI } from "./services/nytAPIService";
-import { searchArticles } from "./services/searchService";
+import {
+  fetchArticlesFromNewsAPI,
+  fetchArticlesFromGuardianAPI,
+  fetchArticlesFromNYTAPI,
+  searchArticles,
+} from "./services";
 import { DATA_SOURCE } from "./constant";
 
 function App() {

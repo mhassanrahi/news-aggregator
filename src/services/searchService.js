@@ -1,6 +1,8 @@
-import { fetchArticlesFromGuardianAPI } from "./guardianAPIService";
-import { fetchArticlesFromNYTAPI } from "./nytAPIService";
-import { fetchArticlesFromNewsAPI } from "./newsAPIService";
+import {
+  fetchArticlesFromNewsAPI,
+  fetchArticlesFromNYTAPI,
+  fetchArticlesFromGuardianAPI,
+} from "./";
 
 async function searchArticles(query, filters) {
   try {
