@@ -19,7 +19,7 @@ function SearchBar({ onSearch }) {
       <div className="flex items-center border border-gray-300 rounded-md overflow-hidden">
         <input
           type="text"
-          placeholder="Search articles..."
+          placeholder="Search news..."
           className="px-4 py-2 w-full focus:outline-none"
           value={query}
           onChange={(event) => setQuery(event.target.value)}
